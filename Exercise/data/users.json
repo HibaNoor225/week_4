@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Assignment",
+    "description": "Do the OOP Assignment",
+    "completed": true,
+    "id": 1
+  },
+  {
+    "title": "Eat",
+    "description": "Eat your food",
+    "completed": true,
+    "id": 2
+  },
+  {
+    "title": "home work",
+    "description": "Math and English homework",
+    "completed": false,
+    "id": 3
+  },
+  {
+    "title": "FYP",
+    "description": "Select the idea",
+    "completed": true,
+    "id": 4
+  },
+  {
+    "title": "Meeting ",
+    "description": "Meeting with teacher about fyp",
+    "completed": false,
+    "id": 5
+  }
+]

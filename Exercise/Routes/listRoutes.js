@@ -1,19 +1,13 @@
 const express = require("express");
 const router = express.Router();
- const {
-  readTask,
-  readTaskById,
-  createTask,
-  updateTask,
-  deleteTask,
-} =  require("../Controller/listController.js");
+ const listController =  require("../Controller/listController.js");
+const validateTask = require("../middleware/listMiddleware.js");
 
-router.use(express.json());
+router.get("/tasks", listController.readTask);
 
-router.get("/tasks", readTask);
-router.get("/tasks/:id", readTaskById);
-router.post("/tasks", createTask);
-router.put("/tasks/:id", updateTask);
-router.delete("/tasks/:id", deleteTask);
+router.get("/tasks/:id", listController.readTaskById);
+router.post("/tasks",validateTask, listController.createTask);
+router.put("/tasks/:id",validateTask, listController.updateTask);
+router.delete("/tasks/:id", listController.deleteTask);
 
 module.exports = router;

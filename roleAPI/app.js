@@ -1,6 +1,6 @@
 const express=require("express")
 app=express()
-listRoutes=require("./Routes/listRoutes.js")
+userRoutes=require("./Routes/roleRoutes.js")
 
 //middleware
 app.use((req, res, next) => {
@@ -8,7 +8,7 @@ app.use((req, res, next) => {
   next(); 
 });
 app.use(express.json())
-app.use("/",listRoutes)
+app.use("/",userRoutes)
 //For invalid requests
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
