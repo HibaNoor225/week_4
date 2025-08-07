@@ -1,7 +1,9 @@
 const express=require("express")
 app=express()
 userRoutes=require("./Routes/userRoutes.js")
+const connectDB = require('./config/db');
 
+connectDB()
 //middleware
 app.use((req, res, next) => {
   console.log(` ${new Date().toString()}   ${req.method} ${req.url}`);

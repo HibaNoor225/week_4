@@ -7,7 +7,7 @@ router.get("/tasks", listController.readTask);
 
 router.get("/tasks/:id", listController.readTaskById);
 router.post("/tasks",validateTask, listController.createTask);
-router.put("/tasks/:id",validateTask, listController.updateTask);
+router.put("/tasks/:id", listController.updateTask);
 router.delete("/tasks/:id", listController.deleteTask);
 
 module.exports = router;

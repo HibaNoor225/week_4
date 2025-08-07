@@ -1,6 +1,9 @@
 const express=require("express")
 app=express()
 listRoutes=require("./Routes/listRoutes.js")
+const connectDB = require('./config/db');
+
+connectDB()
 
 //middleware
 app.use((req, res, next) => {

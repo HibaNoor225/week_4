@@ -1,81 +1,68 @@
-const db = require("../data/file.js");
+const list = require('../models/list');
 
-class listController {
+class ListController {
+  // GET all tasks
   async readTask(req, res, next) {
     try {
-        const tasks = await db.getAllTasks();
-        res.json(tasks);
-    } catch (err)
-     {
-      next(err); 
+      const tasks = await list.find();
+      res.json(tasks);
+    } catch (err) {
+      next(err);
     }
   }
 
+  // GET task by ID
   async readTaskById(req, res, next) {
-    try 
-    {
-      const id = parseInt(req.params.id);
-      const task = await db.getAllTasksById(id);
-
-      if (task) 
-        {
+    try {
+      const task = await list.findById(req.params.id);
+      if (task) {
         res.json(task);
-      } else 
-        {
-        res.status(404).json({ message: "Task not found" });
-      }
-    } catch (err) 
-    {
-      next(err);
-    }
-  }
-
-  async createTask(req, res, next)
-   {
-    try {
-      const task = req.body;
-      const tasks = await db.getAllTasks();
-      task.id = tasks.length > 0 ? tasks[tasks.length - 1].id + 1 : 1;
-
-      await db.addTask(task);
-      res.status(201).json({ message: "Task Added", task });
-    } catch (err) {
-      next(err);
-    }
-  }
-
-  async updateTask(req, res, next) 
-  {
-    try {
-      const id = parseInt(req.params.id);
-      const success = await db.updateTask(id, req.body);
-
-      if (success) {
-        res.json({ message: "Task updated" });
       } else {
-        res.status(404).json({ message: "Task not found" });
+        res.status(404).json({ message: 'Task not found' });
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+  //  create new task
+  async createTask(req, res, next) {
+    try {
+      const newTask = new list(req.body);
+      const savedTask = await newTask.save();
+      res.status(201).json({ message: 'Task added', task: savedTask });
+    } catch (err) {
+      next(err);
+    }
+  }
+//update task
+  
+  async updateTask(req, res, next) {
+    try {
+      const updatedTask = await list.findByIdAndUpdate(req.params.id,req.body,{ new: true } );
+
+      if (updatedTask) {
+        res.json({ message: 'Task updated', task: updatedTask });
+      } else {
+        res.status(404).json({ message: 'Task not found' });
       }
     } catch (err) {
       next(err);
     }
   }
 
-  async deleteTask(req, res, next)
-   {
+  // DELETE task by ID
+  async deleteTask(req, res, next) {
     try {
-      const id = parseInt(req.params.id);
-      const task = await db.getTaskById(id);
-
-      if (!task) {
-        return res.status(404).json({ message: "Task not found" });
+      const deletedTask = await list.findByIdAndDelete(req.params.id);
+      if (deletedTask) {
+        res.json({ message: 'Task deleted', task: deletedTask });
+      } else {
+        res.status(404).json({ message: 'Task not found' });
       }
-
-      await db.deleteTask(id);
-      res.json({ message: "Task deleted", task });
     } catch (err) {
       next(err);
     }
   }
 }
 
-module.exports = new listController();
+module.exports = new ListController();
