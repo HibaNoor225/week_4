@@ -5,6 +5,8 @@ const authRoutes=require("./Routes/authRoutes.js")
 const productRoutes=require("./Routes/productRoutes.js")
 const connectDB = require('./config/db');
 const admin=require('./seedAdmin.js')
+const path = require("path");
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 connectDB()
 admin()
