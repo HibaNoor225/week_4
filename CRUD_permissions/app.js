@@ -6,18 +6,36 @@ const productRoutes=require("./Routes/productRoutes.js")
 const connectDB = require('./config/db');
 const admin=require('./seedAdmin.js')
 const path = require("path");
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+const sanitize = require('mongo-sanitize');
+const limit=require('./utils/limiter.js')
+
+
+
 
 connectDB()
 admin()
 
+app.use(limit.limiter)
 app.use((req, res, next) => {
   console.log(` ${new Date().toString()}   ${req.method} ${req.url}`);
   next(); 
 });
+
+// Middleware to sanitize all incoming data
+app.use((req, res, next) => {
+  req.body = sanitize(req.body);
+  req.query = sanitize(req.query);
+  req.params = sanitize(req.params);
+  next();
+})
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 app.use(express.json())
+
 app.use("/auth",authRoutes)
 app.use("/product",productRoutes)
+
 
 //For invalid requests
 app.use((req, res) => {
